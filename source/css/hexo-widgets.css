@@ -1,0 +1,155 @@
+/* Hitokoto sidebar */
+
+.joe_aside__item.hitokoto .joe-hitokoto__text {
+  margin: 0;
+  line-height: 1.7;
+  font-size: 14px;
+  color: var(--main, #606266);
+}
+
+.joe_aside__item.hitokoto .joe-hitokoto__from {
+  margin: 8px 0 0;
+  font-size: 12px;
+  text-align: right;
+  color: var(--minor, #909399);
+}
+
+/* 暗黑模式：正文用标题色，避免 --routine/#888 对比度不足 */
+html[data-mode="dark"] .joe_aside__item.hitokoto .joe-hitokoto__text {
+  color: var(--title, #ddd);
+}
+
+html[data-mode="dark"] .joe_aside__item.hitokoto .joe-hitokoto__from {
+  color: var(--classF, #bdbdbd);
+}
+
+/* 文章列表分页：覆盖 friends/journals 把 padding-top 清零的样式 */
+.joe_main > .joe_pagination {
+  margin-top: 12px;
+  padding-top: 36px;
+  padding-bottom: 30px;
+}
+
+/* 菜单与搜索之间的横版标题图 */
+.joe_header__brand {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  margin: 0 12px;
+  height: 60px;
+}
+
+.joe_header__brand img {
+  display: block;
+  width: auto;
+  height: 34px;
+  max-width: min(240px, 36vw);
+  object-fit: contain;
+  object-position: center;
+}
+
+/* 有 brand 时，搜索不再抢 margin-left:auto，改由 brand 撑满中间 */
+.joe_header_container:has(.joe_header__brand) .joe_header__above-search {
+  margin-left: 0;
+}
+
+@media (max-width: 860px) {
+  .joe_header__brand {
+    display: none;
+  }
+}
+
+/* 个人信息栏：背景图铺满整卡 */
+.joe_aside__item.author.is-full-bg {
+  background: transparent;
+  padding: 28px 15px 16px;
+}
+
+.joe_aside__item.author.is-full-bg .image {
+  height: 100%;
+  inset: 0;
+  border-radius: var(--radius-wrap);
+  object-fit: cover;
+}
+
+/* 盖一层轻雾，保证名字/统计可读，又不完全盖住画面 */
+.joe_aside__item.author.is-full-bg::before {
+  top: 0;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.55) 45%,
+    rgba(255, 255, 255, 0.92) 100%
+  );
+}
+
+.joe_aside__item.author.is-full-bg .user .avatar {
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+.joe_aside__item.author.is-full-bg .count {
+  position: relative;
+  z-index: 4;
+  margin-top: 4px;
+  padding: 10px 8px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.joe_aside__item.author.is-full-bg .count .item,
+.joe_aside__item.author.is-full-bg .count .item .num {
+  color: #303133;
+  -webkit-text-fill-color: #303133;
+  text-shadow: none;
+}
+
+.joe_aside__item.author.is-full-bg .count .item {
+  color: #606266;
+  -webkit-text-fill-color: #606266;
+}
+
+.joe_aside__item.author.is-full-bg .count .item .num {
+  color: #303133;
+  -webkit-text-fill-color: #303133;
+}
+
+.joe_aside__item.author.is-full-bg .count .item:after {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg::before {
+  background: linear-gradient(
+    180deg,
+    rgba(20, 22, 28, 0.3) 0%,
+    rgba(20, 22, 28, 0.62) 50%,
+    rgba(20, 22, 28, 0.9) 100%
+  );
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg .user .avatar {
+  background: rgba(30, 32, 40, 0.7);
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg .count {
+  background: rgba(28, 30, 38, 0.72);
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg .count .item {
+  color: #c8c9cc;
+  -webkit-text-fill-color: #c8c9cc;
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg .count .item .num {
+  color: #f0f0f0;
+  -webkit-text-fill-color: #f0f0f0;
+}
+
+html[data-mode="dark"] .joe_aside__item.author.is-full-bg .count .item:after {
+  background: rgba(255, 255, 255, 0.16);
+}

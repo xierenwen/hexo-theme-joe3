@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45 45" fill="none" aria-hidden="true">
+  <!-- Original flower-star motif (not a copy of any third-party asset) -->
+  <defs>
+    <mask id="joe-star-hole">
+      <rect width="45" height="45" fill="#fff"/>
+      <path fill="#000" d="M22.5 14.8l1.9 3.95 4.36.45-3.28 3-0.91 4.28L22.5 24.35l-3.89 2.05.91-4.28-3.28-3 4.36-.45L22.5 14.8z"/>
+    </mask>
+  </defs>
+  <g fill="#2ec4b6" mask="url(#joe-star-hole)">
+    <ellipse cx="22.5" cy="11" rx="7.2" ry="10.5"/>
+    <ellipse cx="22.5" cy="11" rx="7.2" ry="10.5" transform="rotate(72 22.5 22.5)"/>
+    <ellipse cx="22.5" cy="11" rx="7.2" ry="10.5" transform="rotate(144 22.5 22.5)"/>
+    <ellipse cx="22.5" cy="11" rx="7.2" ry="10.5" transform="rotate(216 22.5 22.5)"/>
+    <ellipse cx="22.5" cy="11" rx="7.2" ry="10.5" transform="rotate(288 22.5 22.5)"/>
+    <circle cx="22.5" cy="22.5" r="6.5"/>
+  </g>
+</svg>

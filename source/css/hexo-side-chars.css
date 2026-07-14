@@ -1,0 +1,61 @@
+/* 宽屏左右立绘：贴视口两侧，压在 #Joe(z-index:1) 下，只在内容空白露脸 */
+
+.joe-side-chars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.joe-side-chars img {
+  position: absolute;
+  display: block;
+  height: auto;
+  width: min(28vw, 400px);
+  max-height: 92vh;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+  opacity: 0;
+  filter: blur(2px);
+  transform: scale(1.04);
+  animation: joe-side-char-in 1.4s cubic-bezier(0.25, 1, 0.5, 1) 0.35s forwards;
+}
+
+.joe-side-chars__left {
+  left: 0;
+  top: 4%;
+  object-position: left top;
+}
+
+.joe-side-chars__right {
+  right: 0;
+  bottom: 0;
+  object-position: right bottom;
+  animation-delay: 0.55s;
+}
+
+@keyframes joe-side-char-in {
+  to {
+    opacity: 0.95;
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+/* 容器几乎拉满时隐藏，避免压住正文 */
+@media (max-width: 1399px) {
+  .joe-side-chars {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joe-side-chars img {
+    animation: none;
+    opacity: 0.9;
+    filter: none;
+    transform: none;
+  }
+}

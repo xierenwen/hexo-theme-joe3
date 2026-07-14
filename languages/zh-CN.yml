@@ -1,0 +1,11 @@
+archive: 归档
+search: 搜索
+darkmode: 切换深色模式
+# 仅当 menu 使用英文 key 对象写法时生效；推荐直接在 _config.yml 写中文 name
+menu:
+  Home: 首页
+  Archives: 归档
+  Links: 友链
+  Moments: 瞬间
+  About: 关于
+untitled: 无标题

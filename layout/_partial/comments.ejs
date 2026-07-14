@@ -1,0 +1,18 @@
+<%
+var commentsConfig = theme.comments || {};
+var walineConfig = commentsConfig.waline || {};
+%>
+<% if (commentsConfig.enable && walineConfig.serverURL) { %>
+  <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+  <section id="waline" class="joe_comment"></section>
+  <script type="module">
+    import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+
+    init({
+      el: '#waline',
+      serverURL: <%- JSON.stringify(walineConfig.serverURL) %>,
+      dark: 'html[data-mode="dark"]',
+      path: <%- JSON.stringify(url_for(page.path)) %>
+    });
+  </script>
+<% } %>

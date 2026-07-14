@@ -1,0 +1,37 @@
+<%
+var linksPage = (theme.pages && theme.pages.links) || {};
+var linksData = site.data && site.data.links ? site.data.links : [];
+var links = Array.isArray(linksData) ? linksData : [];
+var linksEmpty = linksPage.empty || '暂无友情链接。';
+%>
+<div class="joe_main">
+  <article class="joe_detail joe_friends">
+    <header class="joe_detail__header">
+      <h1 class="joe_detail__title"><%= linksPage.title || page.title %></h1>
+    </header>
+    <div class="joe_detail__article markdown-body">
+      <% if (links.length) { %>
+        <div class="joe_friends__list">
+          <% links.forEach(function (item) { %>
+            <a class="joe_friends__item" href="<%= item.link || item.url %>" target="_blank" rel="noopener noreferrer">
+              <% if (item.avatar) { %>
+                <img class="joe_friends__avatar" src="<%= url_for(item.avatar) %>" alt="<%= item.name %>" loading="lazy">
+              <% } %>
+              <span class="joe_friends__content">
+                <strong class="joe_friends__name"><%= item.name %></strong>
+                <% if (item.description) { %>
+                  <span class="joe_friends__description"><%= item.description %></span>
+                <% } %>
+              </span>
+            </a>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="joe_friends__empty"><%= linksEmpty %></p>
+      <% } %>
+    </div>
+  </article>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

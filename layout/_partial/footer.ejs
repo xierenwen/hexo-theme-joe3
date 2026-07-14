@@ -1,0 +1,22 @@
+<%
+var footer = theme.footer || {};
+var since = footer.since || new Date().getFullYear();
+var year = new Date().getFullYear();
+%>
+<footer class="joe_footer">
+  <div class="joe_container central">
+    <div class="item">
+      © <%= since %> - <%= year %>
+      <a href="<%= url_for('/') %>"><%= config.title %></a>
+      <% if (footer.icp) { %>
+        -
+        <a href="<%= footer.icp_link || 'https://beian.miit.gov.cn/' %>" target="_blank" rel="noopener noreferrer"><%= footer.icp %></a>
+      <% } %>
+      <% if (footer.police) { %>
+        <div class="site_police">
+          <a href="<%= footer.police_link || '#' %>" target="_blank" rel="noopener noreferrer"><%= footer.police %></a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</footer>

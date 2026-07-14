@@ -1,0 +1,90 @@
+<%
+var tagsConf = theme.tags || {};
+var titleText = tagsConf.title || '全部标签';
+var showNum = tagsConf.enable_post_num !== false;
+var type = tagsConf.type || 'card';
+var listClass = type === 'tag' ? 'joe_index__hot-list-tag' : 'joe_index__hot-list';
+var home = theme.home || {};
+var palette = home.solid_thumbnails || [
+  '#fb6c28', '#5b8ff9', '#5ad8a6', '#f6bd16', '#e8684a',
+  '#6dc8ec', '#9270ca', '#ff9d4d', '#269a99', '#ff99c3'
+];
+
+function solidCover(seed) {
+  var hash = 0;
+  var text = String(seed || '');
+  for (var i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash |= 0;
+  }
+  var color = palette[Math.abs(hash) % palette.length];
+  return {
+    color: color,
+    src: 'data:image/svg+xml,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect width="800" height="450" fill="' + color + '"/></svg>'
+    )
+  };
+}
+
+function tagCover(tag) {
+  if (tag.cover) return { src: url_for(tag.cover), color: '' };
+  var posts = tag.posts ? tag.posts.sort('date', -1).toArray() : [];
+  for (var i = 0; i < posts.length; i++) {
+    var post = posts[i];
+    var cover = post.cover || (post.photos && post.photos.length ? post.photos[0] : '');
+    if (cover && String(cover).indexOf('default_thumbnail') === -1) {
+      return { src: url_for(cover), color: '' };
+    }
+  }
+  return solidCover(tag.path || tag.name);
+}
+%>
+<div class="joe_main">
+  <div class="joe_index">
+    <div class="joe_index__title">
+      <ul class="joe_index__title-title pl-15">
+        <li class="item active">
+          <%= titleText %><span class="totals"><%= site.tags.length %></span>
+        </li>
+      </ul>
+    </div>
+    <div class="joe_index__hot">
+      <ul class="<%= listClass %> animated fadeIn" style="padding-bottom: 10px;">
+        <% if (site.tags && site.tags.length) { %>
+          <% site.tags.sort('length').reverse().each(function(tag) { %>
+            <% var coverInfo = tagCover(tag); %>
+            <li class="item">
+              <a class="link" href="<%= url_for(tag.path) %>" title="<%= tag.name %>">
+                <% if (type === 'card') { %>
+                  <figure class="inner">
+                    <% if (showNum) { %>
+                      <em class="post-nums"><%= tag.length %>篇</em>
+                    <% } %>
+                    <img
+                      width="100%"
+                      height="120"
+                      class="image lazyload"
+                      src="<%= coverInfo.src %>"
+                      alt="<%= tag.name %>"
+                      loading="lazy"
+                      <% if (coverInfo.color) { %>style="background-color: <%= coverInfo.color %>;"<% } %>
+                    />
+                    <figcaption class="title"><%= tag.name %></figcaption>
+                  </figure>
+                <% } else { %>
+                  <span title="<%= tag.name %>"><%= tag.name %></span>
+                  <% if (showNum) { %>
+                    <em class="post-nums"><%= tag.length %>篇</em>
+                  <% } %>
+                <% } %>
+              </a>
+            </li>
+          <% }) %>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
+<% if (theme.aside && theme.aside.enable !== false && (theme.aside.enable_tags_aside !== false)) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

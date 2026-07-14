@@ -1,0 +1,178 @@
+<%
+var asideConfig = theme.aside || {};
+var authorConfig = theme.author || {};
+var authorName = authorConfig.name || config.author || config.title;
+var authorAvatar = authorConfig.avatar || '/img/default_avatar.jpg';
+var authorMotto = authorConfig.motto || authorConfig.description || config.description || '';
+var authorBg = authorConfig.bg || '/img/author_bg.jpg';
+var authorBgPosition = authorConfig.bg_position || 'center center';
+var authorBgFull = authorConfig.bg_full === true;
+var avatarType = authorConfig.avatar_type || 'circle';
+var overviewType = authorConfig.overview_type || 'A';
+var newestCount = asideConfig.newest_count || 5;
+var tagLimit = asideConfig.tag_limit || 30;
+var hasTags = site.tags && site.tags.length;
+var categoryCount = site.categories ? site.categories.length : 0;
+var postCount = site.posts ? site.posts.length : 0;
+var tagCount = site.tags ? site.tags.length : 0;
+%>
+<aside class="joe_aside<%= asideConfig.position === 'left' ? ' pos_left' : '' %>">
+  <% if (asideConfig.author !== false) { %>
+    <section class="joe_aside__item author<%= authorBgFull ? ' is-full-bg' : '' %>">
+      <img
+        width="100%"
+        height="<%= authorBgFull ? '100%' : '120' %>"
+        class="image lazyload"
+        src="<%= url_for(authorBg) %>"
+        alt="博主栏壁纸"
+        loading="lazy"
+        style="object-position: <%= authorBgPosition %>;"
+      />
+      <div class="user">
+        <div class="avatar_wrapper <%= avatarType %>">
+          <img
+            class="avatar lazyload"
+            src="<%= url_for(authorAvatar) %>"
+            alt="博主头像"
+            loading="lazy"
+          />
+        </div>
+        <a class="link" href="<%= url_for('/') %>">
+          <%= authorName %>
+          <% if (authorConfig.enable_level !== false) { %>
+            <img class="level" src="<%= url_for('/svg/level_1.svg') %>" alt="博主等级" />
+          <% } %>
+        </a>
+        <% if (authorMotto) { %>
+          <p class="motto joe_motto"><%= authorMotto %></p>
+        <% } %>
+      </div>
+      <div class="count">
+        <% if (overviewType === 'B') { %>
+          <div class="item" title="累计分类数 <%= categoryCount %>">
+            <span class="num"><%= categoryCount %></span>
+            <span>分类数</span>
+          </div>
+          <div class="item" title="累计文章数 <%= postCount %>">
+            <span class="num"><%= postCount %></span>
+            <span>文章数</span>
+          </div>
+          <div class="item" title="累计标签数 <%= tagCount %>">
+            <span class="num"><%= tagCount %></span>
+            <span>标签数</span>
+          </div>
+        <% } else if (overviewType === 'D') { %>
+          <div class="item" title="累计标签数 <%= tagCount %>">
+            <span class="num"><%= tagCount %></span>
+            <span>标签数</span>
+          </div>
+          <div class="item" title="累计文章数 <%= postCount %>">
+            <span class="num"><%= postCount %></span>
+            <span>文章数</span>
+          </div>
+          <div class="item" title="累计分类数 <%= categoryCount %>">
+            <span class="num"><%= categoryCount %></span>
+            <span>分类数</span>
+          </div>
+        <% } else { %>
+          <div class="item" title="累计分类数 <%= categoryCount %>">
+            <span class="num"><%= categoryCount %></span>
+            <span>分类数</span>
+          </div>
+          <div class="item" title="累计标签数 <%= tagCount %>">
+            <span class="num"><%= tagCount %></span>
+            <span>标签数</span>
+          </div>
+          <div class="item" title="累计文章数 <%= postCount %>">
+            <span class="num"><%= postCount %></span>
+            <span>文章数</span>
+          </div>
+        <% } %>
+      </div>
+      <% if (asideConfig.weather && asideConfig.weather.enable && asideConfig.weather.token) { %>
+        <div id="joe-weather" class="joe_aside__weather" data-token="<%= asideConfig.weather.token %>"></div>
+      <% } %>
+    </section>
+  <% } %>
+
+  <% if (theme.hitokoto && theme.hitokoto.enable !== false) { %>
+    <section class="joe_aside__item hitokoto" id="joe-hitokoto">
+      <div class="joe_aside__item-title">
+        <i class="joe-font joe-icon-message"></i>
+        <span class="text">一言</span>
+      </div>
+      <div class="joe_aside__item-contain">
+        <p class="joe-hitokoto__text" id="joe-hitokoto-text">加载中…</p>
+        <p class="joe-hitokoto__from" id="joe-hitokoto-from" hidden></p>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (asideConfig.newest !== false && site.posts && site.posts.length) { %>
+    <section class="joe_aside__item newest">
+      <div class="joe_aside__item-title">
+        <i class="joe-font joe-icon-huo"></i>
+        <span class="text">最新文章</span>
+      </div>
+      <div class="joe_aside__item-contain">
+        <ul class="list">
+          <% site.posts.sort('date', -1).limit(newestCount).each(function(post) { %>
+            <li class="item">
+              <a class="link" href="<%= url_for(post.path) %>" title="<%= post.title %>"><%= post.title %></a>
+              <i class="joe-font joe-icon-link"></i>
+            </li>
+          <% }) %>
+        </ul>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (asideConfig.tags !== false && hasTags) { %>
+    <section class="joe_aside__item tags-cloud" id="tags-cloud">
+      <div class="joe_aside__item-title">
+        <i class="joe-font joe-icon-tag"></i>
+        <span class="text">标签云</span>
+        <a class="tags_more" href="<%= url_for('/tags/') %>">更多<i class="joe-font joe-icon-more-right"></i></a>
+      </div>
+      <div class="joe_aside__item-contain">
+        <div class="tags-cloud-list static">
+          <% site.tags.sort('length', -1).limit(tagLimit).each(function(tag) { %>
+            <a
+              data-label="<%= tag.name %>"
+              data-url="<%= url_for(tag.path) %>"
+              href="<%= url_for(tag.path) %>"
+              title="<%= tag.name %>"
+            ><%= tag.name %></a>
+          <% }) %>
+        </div>
+      </div>
+    </section>
+  <% } %>
+
+  <% if (asideConfig.timelife !== false) { %>
+    <section class="joe_aside__item timelife">
+      <div class="joe_aside__item-title">
+        <i class="joe-font joe-icon-shalou"></i>
+        <span class="text">人生倒计时</span>
+      </div>
+      <div class="joe_aside__item-contain"></div>
+    </section>
+  <% } %>
+
+  <% if (asideConfig.categories === true && site.categories && site.categories.length) { %>
+    <section class="joe_aside__item categories joe_aside__categories">
+      <div class="joe_aside__item-title">
+        <i class="joe-font joe-icon-fenlei"></i>
+        <span class="text">分类</span>
+      </div>
+      <nav class="joe_aside__item-contain">
+        <% site.categories.sort('name').each(function(cat) { %>
+          <a class="item" href="<%= url_for(cat.path) %>">
+            <span class="text"><%= cat.name %></span>
+            <span class="count"><%= cat.length %></span>
+          </a>
+        <% }) %>
+      </nav>
+    </section>
+  <% } %>
+</aside>

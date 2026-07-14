@@ -1,0 +1,65 @@
+<%
+var lightTheme = (theme.style && theme.style.mode_color_light) || '#fb6c28';
+var darkTheme = (theme.style && theme.style.mode_color_dark) || '#9999ff';
+var pageBg = (theme.style && theme.style.background_image) || '';
+var pageBgDark = (theme.style && theme.style.background_image_dark) || pageBg;
+var pageBgSize = (theme.style && theme.style.background_size) || 'cover';
+var pageBgPosition = (theme.style && theme.style.background_position) || 'center center';
+var pageBgAttachment = (theme.style && theme.style.background_attachment) || 'fixed';
+var pageBgOverlay = (theme.style && theme.style.background_overlay) || '';
+var pageBgOverlayDark = (theme.style && theme.style.background_overlay_dark) || pageBgOverlay;
+%>
+<style>
+  html body {
+    --theme: <%= lightTheme %>;
+    --wave-color: #fff;
+    --scroll-bar: #c0c4cc;
+    --loading-bar: var(--theme);
+    --img-max-width: 100%;
+  }
+  html[data-mode='dark'] body {
+    --theme: <%= darkTheme %>;
+    --wave-color: #fff;
+    --scroll-bar: #666;
+    --loading-bar: var(--theme);
+  }
+  a {
+    color: var(--main);
+  }
+  /* 文章目录：桌面端在 tocbot 就绪后显示（覆盖默认 display:none） */
+  @media (min-width: 993px) {
+    html .page-post .toc-container.is-ready {
+      display: block !important;
+    }
+  }
+<% if (pageBg) { %>
+  /* 自定义整站背景图（覆盖默认点阵） */
+  html body:after {
+    background-color: transparent !important;
+    background-image: url("<%= url_for(pageBg) %>") !important;
+    background-size: <%= pageBgSize %> !important;
+    background-position: <%= pageBgPosition %> !important;
+    background-repeat: no-repeat !important;
+    background-attachment: <%= pageBgAttachment %> !important;
+  }
+  <% if (pageBgOverlay) { %>
+  html body:before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: <%= pageBgOverlay %>;
+  }
+  <% } %>
+  html[data-mode='dark'] body:after {
+    background-color: transparent !important;
+    background: transparent url("<%= url_for(pageBgDark) %>") <%= pageBgPosition %> / <%= pageBgSize %> no-repeat <%= pageBgAttachment %> !important;
+  }
+  <% if (pageBgOverlayDark) { %>
+  html[data-mode='dark'] body:before {
+    background: <%= pageBgOverlayDark %>;
+  }
+  <% } %>
+<% } %>
+</style>

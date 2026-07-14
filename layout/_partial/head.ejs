@@ -1,0 +1,77 @@
+<%
+var pagePath = page.path || '';
+var isLinksPage = page.layout === 'links' || pagePath.indexOf('links') !== -1;
+var isMomentsPage = page.layout === 'moments' || pagePath.indexOf('moments') !== -1;
+var effects = theme.effects || {};
+var style = theme.style || {};
+var musicOn = theme.music && theme.music.enable === true && theme.music.id;
+var pjaxConf = theme.pjax || {};
+// 默认：开了音乐就开 PJAX（跨页不断播）；可在配置里显式关掉
+var pjaxEnabled = pjaxConf.enable === true || (pjaxConf.enable !== false && musicOn);
+%>
+<link rel="icon" href="<%= url_for('/img/avatar.jpg') %>">
+<% var fontsConf = (theme.style && theme.style.fonts) || {}; %>
+<% if (fontsConf.enable !== false) { %>
+<link rel="preload" href="<%= url_for('/fonts/hina-mincho-japanese-400-normal.woff2') %>" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="<%= url_for('/css/hexo-fonts.css') %>">
+<% } %>
+<link rel="stylesheet" href="<%= url_for('/css/min/normalize.min.css') %>">
+<link rel="stylesheet" href="<%= url_for('/lib/font-awesome/css/font-awesome.min.css') %>">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_2788564_crkap1ed9j5.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_4198339_jcoci5bgy7.css">
+<link rel="stylesheet" href="<%= url_for('/css/min/theme.min.css') %>">
+<% if (effects.animate !== false) { %>
+<link rel="stylesheet" href="<%= url_for('/lib/animate/animate.min.css') %>">
+<% } %>
+<link rel="stylesheet" href="<%= url_for('/css/min/global.min.css') %>">
+<link rel="stylesheet" href="<%= url_for('/css/min/responsive.min.css') %>">
+<link rel="stylesheet" href="<%= url_for('/css/min/beauty.min.css') %>">
+<%- partial('_partial/key-css') %>
+<style>
+  #Joe .joe_container {
+    max-width: <%= style.container_max_width || '1320px' %> !important;
+  }
+  @media (max-width: 1360px) {
+    #Joe .joe_container { max-width: initial !important; }
+  }
+</style>
+<% if (pjaxEnabled || isLinksPage) { %>
+<link rel="stylesheet" href="<%= url_for('/css/min/friends.min.css') %>">
+<% } %>
+<% if (pjaxEnabled || isMomentsPage) { %>
+<link rel="stylesheet" href="<%= url_for('/css/min/journals.min.css') %>">
+<% } %>
+<% if (pjaxEnabled || is_home() || is_category() || is_tag() || page.layout === 'categories' || page.layout === 'tags') { %>
+<link rel="stylesheet" href="<%= url_for('/css/min/index.min.css') %>">
+<% } %>
+<% if (pjaxEnabled || is_post()) { %>
+<link rel="stylesheet" href="<%= url_for('/css/min/post.min.css') %>">
+<link rel="stylesheet" href="<%= url_for('/css/hexo-highlight.css') %>">
+<% } %>
+<link rel="stylesheet" href="<%= url_for('/css/hexo-widgets.css') %>">
+<% if (theme.effects && theme.effects.stars && theme.effects.stars.enable !== false) { %>
+<link rel="stylesheet" href="<%= url_for('/css/hexo-stars.css') %>">
+<% } %>
+<% var sideCharsConf = (theme.effects && theme.effects.side_chars) || {}; %>
+<% if (sideCharsConf.enable !== false && (sideCharsConf.left || sideCharsConf.right)) { %>
+<link rel="stylesheet" href="<%= url_for('/css/hexo-side-chars.css') %>">
+<% } %>
+<% if (musicOn) { %>
+<link rel="stylesheet" href="<%= url_for('/lib/APlayer/APlayer.min.css') %>">
+<% } %>
+<% if (pjaxEnabled || (page.content && /class=["']mermaid["']/.test(page.content))) { %>
+<link rel="stylesheet" href="<%= url_for('/css/mermaid.css') %>">
+<% } %>
+<% if (pjaxEnabled || is_archive() || is_category() || is_tag()) { %>
+<link rel="stylesheet" href="<%= url_for('/css/min/archives.min.css') %>">
+<% } %>
+<% if (pjaxEnabled) { %>
+<link rel="stylesheet" href="<%= url_for('/lib/nprogress/nprogress.min.css') %>">
+<% } %>
+<!-- Vercel Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+<!-- Vercel Speed Insights -->
+<script defer src="/_vercel/speed-insights/script.js"></script>

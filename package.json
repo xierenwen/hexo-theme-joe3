@@ -1,0 +1,7 @@
+{
+  "name": "hexo-theme-joe3",
+  "version": "0.1.0",
+  "description": "Hexo port of Halo Theme Joe3 (visual hybrid rewrite)",
+  "private": true,
+  "license": "CC-BY-NC-SA-4.0"
+}

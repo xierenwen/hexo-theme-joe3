@@ -1,0 +1,35 @@
+<%
+var momentsPage = (theme.pages && theme.pages.moments) || {};
+var momentsData = site.data && site.data.moments ? site.data.moments : [];
+var moments = Array.isArray(momentsData) ? momentsData.slice() : [];
+moments.sort(function (left, right) {
+  return new Date(right.date).getTime() - new Date(left.date).getTime();
+});
+var momentsEmpty = momentsPage.empty || '暂无瞬时记录。';
+%>
+<div class="joe_main">
+  <article class="joe_detail joe_moments">
+    <header class="joe_detail__header">
+      <h1 class="joe_detail__title"><%= momentsPage.title || page.title %></h1>
+    </header>
+    <div class="joe_detail__article markdown-body">
+      <% if (moments.length) { %>
+        <div class="joe_moments__timeline">
+          <% moments.forEach(function (item) { %>
+            <section class="joe_moments__item">
+              <% if (item.date) { %>
+                <time class="joe_moments__date" datetime="<%= date_xml(item.date) %>"><%= date(item.date, 'YYYY-MM-DD') %></time>
+              <% } %>
+              <div class="joe_moments__content"><%- item.content %></div>
+            </section>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p class="joe_moments__empty"><%= momentsEmpty %></p>
+      <% } %>
+    </div>
+  </article>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

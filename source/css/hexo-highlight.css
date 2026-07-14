@@ -1,0 +1,167 @@
+/* Hexo highlight.js output vs Joe3 article tables (table-layout: fixed) */
+.joe_detail__article figure.highlight,
+.joe_detail__article .highlight {
+  margin: 1em 0;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: #282c34 !important;
+  color: #abb2bf;
+}
+
+.joe_detail__article figure.highlight table,
+.joe_detail__article .highlight table {
+  table-layout: auto !important;
+  width: 100% !important;
+  max-width: none;
+  margin: 0 !important;
+  border: 0 !important;
+  border-collapse: collapse;
+  background: transparent !important;
+}
+
+.joe_detail__article figure.highlight td,
+.joe_detail__article .highlight td {
+  border: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.joe_detail__article figure.highlight .gutter,
+.joe_detail__article .highlight .gutter {
+  width: 1% !important;
+  min-width: 2.4em;
+  max-width: 3.2em;
+  padding: 1em 0.7em !important;
+  text-align: right !important;
+  user-select: none;
+  vertical-align: top;
+  color: #636d83 !important;
+  background: rgba(0, 0, 0, 0.18) !important;
+  white-space: nowrap;
+}
+
+.joe_detail__article figure.highlight .code,
+.joe_detail__article .highlight .code {
+  width: 99% !important;
+  padding: 1em 1.1em 1em 0.85em !important;
+  vertical-align: top;
+  color: #abb2bf;
+}
+
+.joe_detail__article figure.highlight pre,
+.joe_detail__article .highlight pre {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  overflow: visible;
+  line-height: 1.65 !important;
+  font-size: 0.9em !important;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace !important;
+  white-space: pre;
+  color: inherit;
+}
+
+.joe_detail__article figure.highlight .line,
+.joe_detail__article .highlight .line {
+  display: block;
+  height: auto !important;
+  min-height: 0;
+  line-height: 1.65 !important;
+}
+
+/* Hexo emits <span.line>...</span><br> per row; br creates an empty trailing line */
+.joe_detail__article figure.highlight br,
+.joe_detail__article .highlight br {
+  display: none !important;
+}
+
+/* common token colors for Hexo highlight.js */
+.joe_detail__article figure.highlight .keyword,
+.joe_detail__article .highlight .keyword { color: #c678dd; }
+.joe_detail__article figure.highlight .string,
+.joe_detail__article .highlight .string { color: #98c379; }
+.joe_detail__article figure.highlight .comment,
+.joe_detail__article .highlight .comment { color: #5c6370; font-style: italic; }
+.joe_detail__article figure.highlight .number,
+.joe_detail__article .highlight .number { color: #d19a66; }
+.joe_detail__article figure.highlight .built_in,
+.joe_detail__article .highlight .built_in,
+.joe_detail__article figure.highlight .type,
+.joe_detail__article .highlight .type { color: #e5c07b; }
+.joe_detail__article figure.highlight .title,
+.joe_detail__article .highlight .title,
+.joe_detail__article figure.highlight .function,
+.joe_detail__article .highlight .function { color: #61afef; }
+.joe_detail__article figure.highlight .params,
+.joe_detail__article .highlight .params { color: #abb2bf; }
+.joe_detail__article figure.highlight .meta,
+.joe_detail__article .highlight .meta { color: #e06c75; }
+
+/* Code chrome: title / mac dots / copy (Hexo figure.highlight) */
+.joe_detail__article figure.highlight.joe-code {
+  position: relative;
+  padding-top: 2.4em;
+}
+
+.joe_detail__article figure.highlight.joe-code.joe-code--macdot::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fc625d;
+  box-shadow: 16px 0 #fdbc40, 32px 0 #35cd4b;
+  z-index: 2;
+}
+
+.joe_detail__article figure.highlight.joe-code .joe-code__title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2.4em;
+  padding: 0 48px 0 56px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #9da5b4;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.joe_detail__article figure.highlight.joe-code:not(.joe-code--macdot) .joe-code__title {
+  padding-left: 14px;
+}
+
+.joe_detail__article figure.highlight.joe-code .joe-code__copy {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #9da5b4;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+}
+
+.joe_detail__article figure.highlight.joe-code .joe-code__copy:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}

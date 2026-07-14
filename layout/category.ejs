@@ -1,0 +1,22 @@
+<div class="joe_main">
+  <div class="joe_archive">
+    <div class="joe_archive__title">
+      <div class="joe_archive__title-title">
+        <i class="joe-font joe-icon-feather joe_archive__title-icon"></i>以下是
+        <span class="muted ellipsis"><%= page.category %></span>
+        <span>相关的文章</span>
+      </div>
+    </div>
+    <ul class="joe_archive__list joe_list" aria-label="posts">
+      <% if (page.posts && page.posts.length) { %>
+        <% page.posts.each(function(post, i) { %>
+          <%- partial('_partial/post-card', { post: post, index: i, enableWow: false }) %>
+        <% }) %>
+      <% } %>
+    </ul>
+    <%- partial('_partial/pagination') %>
+  </div>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

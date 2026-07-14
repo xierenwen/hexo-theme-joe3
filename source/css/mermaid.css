@@ -1,0 +1,46 @@
+/* Mermaid diagrams — keep clear of highlight.js / Joe pre styles */
+.joe_detail__article pre.mermaid,
+.joe_detail__article .mermaid {
+  display: block;
+  margin: 1.25rem 0;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+  text-align: center;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 8px;
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: 1em !important;
+  line-height: normal !important;
+  white-space: pre;
+  box-shadow: none !important;
+}
+
+.joe_detail__article pre.mermaid::before,
+.joe_detail__article .mermaid::before,
+.joe_detail__article pre.mermaid::after,
+.joe_detail__article .mermaid::after {
+  content: none !important;
+  display: none !important;
+}
+
+.joe_detail__article .mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.joe_detail__article .mermaid[data-processed] {
+  white-space: normal;
+}
+
+.joe_detail__article .mermaid.mermaid-error {
+  text-align: left;
+  white-space: pre-wrap;
+  color: #c45656;
+  background: rgba(196, 86, 86, 0.08) !important;
+  border: 1px solid rgba(196, 86, 86, 0.25) !important;
+  padding: 0.85rem 1rem;
+  font-size: 0.85em !important;
+  font-family: Menlo, Monaco, Consolas, monospace !important;
+}

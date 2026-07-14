@@ -1,0 +1,74 @@
+/* 花瓣星闪烁层：仿 kaoruhana 站「定点淡入 + 缩放 + 自转」，pointer-events 穿透 */
+.joe-stars {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.joe-stars__item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--joe-star-size, 20px);
+  opacity: 0;
+  will-change: opacity, transform;
+  animation-name: joe-star-flash;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.joe-stars__item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: joe-star-spin 10s linear infinite;
+  filter: drop-shadow(0 0 3px rgba(62, 207, 192, 0.45));
+}
+
+html[data-mode="dark"] .joe-stars__item img {
+  filter: drop-shadow(0 0 4px rgba(120, 235, 220, 0.55));
+}
+
+@keyframes joe-star-flash {
+  0%,
+  22% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0.7);
+  }
+  38% {
+    opacity: 1;
+    transform: translate(var(--x), var(--y)) scale(var(--peak, 0.95));
+  }
+  52% {
+    opacity: 1;
+    transform: translate(var(--x), var(--y)) scale(var(--peak, 0.95));
+  }
+  68%,
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0.7);
+  }
+}
+
+@keyframes joe-star-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .joe-stars {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .joe-stars__item {
+    width: var(--joe-star-size-mobile, 4vw);
+  }
+}

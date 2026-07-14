@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title><% if (page.title) { %><%= page.title %> | <% } else if (is_category()) { %><%= page.category %> | <% } else if (is_tag()) { %><%= page.tag %> | <% } %><%= config.title %></title>
+  <%- partial('_partial/head') %>
+</head>
+<body class="joe_body">
+  <div id="Joe">
+    <%- partial('_partial/header') %>
+    <div class="joe_container joe_main_container<%= is_home() ? ' page-index' : '' %><%= is_archive() ? ' page-archives' : '' %><%= is_category() ? ' page-category' : '' %><%= page.layout === 'categories' ? ' page-categories' : '' %><%= is_tag() ? ' page-tag' : '' %><%= page.layout === 'tags' ? ' page-tags' : '' %>">
+      <%- body %>
+    </div>
+    <%- partial('_partial/footer') %>
+    <%- partial('_partial/actions') %>
+    <%- partial('_partial/search') %>
+  </div>
+  <% if (theme.music && theme.music.enable === true && theme.music.id) { %>
+  <div id="global-aplayer"></div>
+  <% } %>
+  <% var sideChars = (theme.effects && theme.effects.side_chars) || {}; %>
+  <% if (sideChars.enable !== false && (sideChars.left || sideChars.right)) { %>
+  <aside id="joe-side-chars" class="joe-side-chars" aria-hidden="true">
+    <% if (sideChars.left) { %>
+    <img class="joe-side-chars__left" src="<%= url_for(sideChars.left) %>" alt="" decoding="async" draggable="false">
+    <% } %>
+    <% if (sideChars.right) { %>
+    <img class="joe-side-chars__right" src="<%= url_for(sideChars.right) %>" alt="" decoding="async" draggable="false">
+    <% } %>
+  </aside>
+  <% } %>
+  <% if (theme.effects && theme.effects.stars && theme.effects.stars.enable !== false) { %>
+  <div id="joe-stars" class="joe-stars" aria-hidden="true"></div>
+  <% } %>
+  <%- partial('_partial/scripts') %>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<%
+var navbar = theme.navbar || {};
+var authorConfig = theme.author || {};
+var logoSrc = navbar.logo || authorConfig.avatar || '/img/avatar.jpg';
+var logoRadius = navbar.logo_radius != null ? navbar.logo_radius : '50%';
+var showLogo = navbar.show_logo !== false;
+var brandSrc = navbar.brand || navbar.title_logo || '';
+var brandHeight = navbar.brand_height || '34px';
+var brandMaxWidth = navbar.brand_max_width || '240px';
+var pagesConfig = theme.pages || {};
+
+function isPageEnabled(key) {
+  var conf = pagesConfig[key];
+  if (!conf || typeof conf !== 'object') return true;
+  return conf.enable !== false;
+}
+
+function pathLooksLike(path, key) {
+  if (!path || typeof path !== 'string') return false;
+  return path.indexOf('/' + key) !== -1 || path === key || path === '/' + key + '/';
+}
+
+function normalizeMenu(menu) {
+  var items = [];
+  if (!menu) return items;
+
+  if (Array.isArray(menu)) {
+    menu.forEach(function (item) {
+      if (!item || item.enable === false) return;
+      var name = item.name || item.title || item.label;
+      var path = item.path || item.url || item.link || '/';
+      if (!name) return;
+      if (pathLooksLike(path, 'moments') && !isPageEnabled('moments')) return;
+      if (pathLooksLike(path, 'links') && !isPageEnabled('links')) return;
+      if (pathLooksLike(path, 'about') && !isPageEnabled('about')) return;
+      items.push({ name: name, path: path });
+    });
+    return items;
+  }
+
+  Object.keys(menu).forEach(function (key) {
+    var value = menu[key];
+    if (value == null) return;
+
+    if (typeof value === 'object') {
+      if (value.enable === false) return;
+      var objName = value.name || value.title || value.label || key;
+      var objPath = value.path || value.url || value.link || '/';
+      if (pathLooksLike(objPath, 'moments') && !isPageEnabled('moments')) return;
+      if (pathLooksLike(objPath, 'links') && !isPageEnabled('links')) return;
+      if (pathLooksLike(objPath, 'about') && !isPageEnabled('about')) return;
+      items.push({ name: objName, path: objPath });
+      return;
+    }
+
+    if (typeof value !== 'string') return;
+    if (pathLooksLike(value, 'moments') && !isPageEnabled('moments')) return;
+    if (pathLooksLike(value, 'links') && !isPageEnabled('links')) return;
+    if (pathLooksLike(value, 'about') && !isPageEnabled('about')) return;
+
+    var label = __('menu.' + key);
+    items.push({
+      name: label === 'menu.' + key ? key : label,
+      path: value
+    });
+  });
+
+  return items;
+}
+
+var menuItems = normalizeMenu(theme.menu);
+%>
+<header class="joe_header">
+  <div class="joe_header__above fixed">
+    <div class="joe_container joe_header_container">
+      <i class="joe-font joe-icon-caidan joe_header__above-slideicon" aria-hidden="true"></i>
+      <% if (showLogo) { %>
+        <a class="joe_header__above-logo" href="<%= url_for('/') %>" title="<%= config.title %>">
+          <img
+            style="border-radius: <%= logoRadius %>;"
+            src="<%= url_for(logoSrc) %>"
+            alt="<%= config.title %>"
+          />
+        </a>
+      <% } else { %>
+        <a class="joe_header__above-logo" href="<%= url_for('/') %>" title="<%= config.title %>"><%= config.title %></a>
+      <% } %>
+      <nav class="joe_header__above-nav active-shadow">
+        <% menuItems.forEach(function (item) { %>
+          <a class="item" href="<%= url_for(item.path) %>"><%= item.name %></a>
+        <% }) %>
+      </nav>
+      <% if (brandSrc) { %>
+        <a class="joe_header__brand" href="<%= url_for('/') %>" title="<%= config.title %>">
+          <img
+            src="<%= url_for(brandSrc) %>"
+            alt="<%= config.title %>"
+            style="height: <%= brandHeight %>; max-width: <%= brandMaxWidth %>;"
+            decoding="async"
+          />
+        </a>
+      <% } %>
+      <div class="joe_header__above-search">
+        <% if (theme.search && theme.search.enable) { %>
+          <button type="button" class="submit joe_search__open" style="border-radius: 17px;" aria-label="<%= __('search') || '搜索' %>">
+            <i class="joe-font joe-icon-search"></i>
+          </button>
+        <% } %>
+      </div>
+      <% if (theme.search && theme.search.enable) { %>
+        <i class="joe-font joe-icon-search joe_header__above-searchicon joe_search__open" aria-label="<%= __('search') || '搜索' %>"></i>
+      <% } %>
+    </div>
+  </div>
+  <div class="joe_header__mask"></div>
+</header>

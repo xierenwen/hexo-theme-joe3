@@ -1,0 +1,70 @@
+<%
+var yearGroups = {};
+if (page.posts && page.posts.length) {
+  page.posts.each(function(post) {
+    var year = date(post.date, 'YYYY');
+    if (!yearGroups[year]) yearGroups[year] = [];
+    yearGroups[year].push(post);
+  });
+}
+var years = Object.keys(yearGroups).sort(function(a, b) {
+  return Number(b) - Number(a);
+});
+var hasCategories = site.categories && site.categories.length;
+%>
+<div class="joe_main">
+  <div class="joe_index joe_archives__filing">
+    <div class="title"><%= page.title || __('archive') %></div>
+    <div class="content">
+      <% if (hasCategories) { %>
+        <div class="joe_archives__category animated fadeIn">
+          <div class="joe_archives-title">
+            <i class="joe-font joe-icon-fenlei"></i>分类
+          </div>
+          <ul class="joe_category-list">
+            <% site.categories.sort('length').reverse().each(function(cat) { %>
+              <li class="item">
+                <a class="link" href="<%= url_for(cat.path) %>" title="<%= cat.name %>">
+                  <span title="<%= cat.name %>"><%= cat.name %></span>
+                  <em><%= cat.length %></em>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        </div>
+      <% } %>
+      <div class="joe_archives__wrapper animated fadeIn">
+        <div class="joe_archives-title">
+          <i class="joe-font joe-icon-timeline"></i>时间轴<em>（年）</em>
+        </div>
+        <% if (years.length) { %>
+          <ul class="joe_archives-timelist">
+            <% years.forEach(function(year) { %>
+              <li class="item">
+                <div class="wrapper">
+                  <div class="panel in">
+                    <%= year %> 年
+                    <i class="joe-font joe-icon-arrow-down"></i>
+                  </div>
+                  <ol class="panel-body">
+                    <% yearGroups[year].forEach(function(post) { %>
+                      <li>
+                        <a href="<%= url_for(post.path) %>" title="<%= post.title || __('untitled') %>">
+                          <%= date(post.date, 'YYYY-MM-DD') %>：<%= post.title || __('untitled') %>
+                        </a>
+                      </li>
+                    <% }) %>
+                  </ol>
+                </div>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </div>
+      <%- partial('_partial/pagination') %>
+    </div>
+  </div>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

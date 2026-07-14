@@ -1,0 +1,91 @@
+<%
+var home = theme.home || {};
+var enableThumb = home.enable_post_thumbnail !== false;
+var defaultThumb = home.default_thumbnail || '/img/default_thumbnail.png';
+var rawCover = post.cover || (post.photos && post.photos.length ? post.photos[0] : '') || '';
+var normalizedCover = String(rawCover || '').trim();
+var hasRealCover = !!normalizedCover && normalizedCover !== defaultThumb && normalizedCover.indexOf('default_thumbnail') === -1;
+var cover = hasRealCover ? normalizedCover : '';
+var isSolidCover = false;
+var solidColor = '';
+
+if (!cover) {
+  var palette = home.solid_thumbnails || [
+    '#fb6c28', '#5b8ff9', '#5ad8a6', '#f6bd16', '#e8684a',
+    '#6dc8ec', '#9270ca', '#ff9d4d', '#269a99', '#ff99c3'
+  ];
+  var seed = String(post.path || post.slug || post.title || '');
+  var hash = 0;
+  for (var i = 0; i < seed.length; i++) {
+    hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  solidColor = palette[Math.abs(hash) % palette.length];
+  isSolidCover = true;
+  cover = 'data:image/svg+xml,' + encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450"><rect width="800" height="450" fill="' + solidColor + '"/></svg>'
+  );
+}
+
+var rawExcerpt = post.excerpt || strip_html(post.content || '').substring(0, 120);
+var titleText = post.title || __('untitled');
+var wowFlag = typeof enableWow === 'undefined' ? true : enableWow;
+var wowEnabled = wowFlag !== false && theme.effects && theme.effects.wow !== false && typeof is_home === 'function' && is_home();
+var listIndex = typeof index === 'number' ? index : 0;
+var views = typeof post.views === 'number' ? post.views : 0;
+var comments = typeof post.comments === 'number' ? post.comments : 0;
+var likes = typeof post.likes === 'number' ? post.likes : 0;
+%>
+<li
+  class="joe_list__item default<%= wowEnabled ? ' animated wow' : '' %><%= isSolidCover ? ' is-solid-thumb' : '' %>"
+  <% if (wowEnabled) { %>data-wow-delay="0.<%= listIndex %>s"<% } %>
+  style="animation-delay: 0.<%= listIndex %>s;"
+>
+  <% if (enableThumb) { %>
+    <a
+      class="thumbnail"
+      href="<%= url_for(post.path) %>"
+      title="<%= titleText %>"
+      <% if (isSolidCover) { %>style="background-color: <%= solidColor %>;"<% } %>
+    >
+      <img
+        width="100%"
+        height="100%"
+        class="lazyload"
+        src="<%= isSolidCover ? cover : url_for(cover) %>"
+        alt="<%= titleText %>"
+        loading="lazy"
+      />
+      <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+      <i class="joe-font joe-icon-picture"></i>
+    </a>
+  <% } %>
+  <div class="information">
+    <a class="title" href="<%= url_for(post.path) %>" title="<%= titleText %>">
+      <% if (post.sticky) { %><span class="badge" style="display: inline-block">置顶</span><% } %>
+      <%= titleText %>
+    </a>
+    <a class="abstract" href="<%= url_for(post.path) %>" title="<%= rawExcerpt %>"><%= rawExcerpt %></a>
+    <div class="meta">
+      <ul class="items">
+        <li><%= date(post.date, 'YYYY-MM-DD') %></li>
+        <li><i class="joe-font joe-icon-eye"></i><%= views %></li>
+        <li><i class="joe-font joe-icon-message"></i><%= comments %></li>
+        <li><i class="joe-font joe-icon-dianzan"></i><%= likes %></li>
+      </ul>
+      <% if (post.categories && post.categories.length) { %>
+        <ul class="categories">
+          <% post.categories.each(function(category) { %>
+            <li class="pcate">
+              <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="15" height="15" aria-hidden="true">
+                <path d="M512.2 564.743a76.818 76.818 0 0 1-30.973-6.508L108.224 393.877c-26.105-11.508-42.56-35.755-42.927-63.272-.384-27.44 15.356-52.053 41.042-64.232l373.004-176.74c20.591-9.737 45.16-9.755 65.75.017L917.68 266.39c25.668 12.188 41.39 36.792 41.024 64.231-.384 27.5-16.821 51.73-42.908 63.237l-372.57 164.377a77.18 77.18 0 0 1-31.025 6.508zM139.843 329.592l370.213 163.241c1.291.56 3.018.567 4.345-.009l369.758-163.128-369.706-175.464v-.01c-1.326-.628-3.158-.636-4.502 0l-370.108 175.37zm748.015 1.858h.175-.175zM512.376 941.674c-10.348 0-20.8-2.32-30.537-6.997L121.05 778.624c-18.113-7.834-26.454-28.87-18.62-46.983 7.835-18.112 28.862-26.488 46.993-18.61l362.08 156.629 345.26-156.366c17.939-8.166 39.14-.253 47.324 17.746 8.166 17.964.227 39.157-17.729 47.324l-344.51 156.61c-9.196 4.449-19.281 6.7-29.471 6.7z" fill="var(--minor)"></path>
+                <path d="M871.563 515.449L511.81 671.775 152.358 515.787v73.578a34.248 34.248 0 0 0 20.76 31.48l301.518 129.19c11.806 5.703 24.499 8.546 37.175 8.546s25.367-2.843 37.174-8.546L850.82 620.534a34.248 34.248 0 0 0 20.744-31.474V515.45z" fill="#ff6a18"></path>
+              </svg>
+              <a class="link" href="<%= url_for(category.path) %>"><%= category.name %></a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+  </div>
+</li>

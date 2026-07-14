@@ -1,0 +1,18 @@
+<%
+var aboutPage = (theme.pages && theme.pages.about) || {};
+var isAboutPage = page.path && (page.path.indexOf('about') === 0 || page.path.indexOf('/about') !== -1);
+var pageTitle = (isAboutPage && aboutPage.title) ? aboutPage.title : page.title;
+%>
+<div class="joe_main">
+  <article class="joe_detail">
+    <header class="joe_detail__header">
+      <h1 class="joe_detail__title"><%= pageTitle %></h1>
+    </header>
+    <div class="joe_detail__article markdown-body">
+      <%- page.content %>
+    </div>
+  </article>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>

@@ -1,0 +1,41 @@
+<% if (page.total > 1) { %>
+  <%
+    var basePath = page.base || '/';
+    if (basePath.slice(-1) !== '/') basePath += '/';
+    function pageLink(n) {
+      if (n <= 1) return url_for(basePath);
+      return url_for(basePath + 'page/' + n + '/');
+    }
+  %>
+  <ul class="joe_pagination" aria-label="pagination">
+    <li class="prev<%= page.current <= 1 ? ' disabled' : '' %>">
+      <% if (page.prev) { %>
+        <a href="<%= url_for(page.prev_link) %>" aria-label="上一页" rel="prev">
+          <i class="joe-font joe-icon-prev" aria-hidden="true"></i>
+        </a>
+      <% } else { %>
+        <a href="javascript:;" aria-disabled="true" tabindex="-1">
+          <i class="joe-font joe-icon-prev" aria-hidden="true"></i>
+        </a>
+      <% } %>
+    </li>
+
+    <% for (var i = 1; i <= page.total; i++) { %>
+      <li<% if (i === page.current) { %> class="active"<% } %>>
+        <a href="<%= pageLink(i) %>"<% if (i === page.current) { %> aria-current="page"<% } %>><%= i %></a>
+      </li>
+    <% } %>
+
+    <li class="next<%= page.current >= page.total ? ' disabled' : '' %>">
+      <% if (page.next) { %>
+        <a href="<%= url_for(page.next_link) %>" aria-label="下一页" rel="next">
+          <i class="joe-font joe-icon-next" aria-hidden="true"></i>
+        </a>
+      <% } else { %>
+        <a href="javascript:;" aria-disabled="true" tabindex="-1">
+          <i class="joe-font joe-icon-next" aria-hidden="true"></i>
+        </a>
+      <% } %>
+    </li>
+  </ul>
+<% } %>

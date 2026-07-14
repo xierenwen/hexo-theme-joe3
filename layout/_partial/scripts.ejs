@@ -1,0 +1,140 @@
+<%
+var codeConf = theme.code || {};
+var hitokotoConf = theme.hitokoto || {};
+var musicConf = theme.music || {};
+var musicEnabled = musicConf.enable === true && !!musicConf.id;
+var codeCopyEnabled = codeConf.copy !== false;
+var codeTitleEnabled = codeConf.title !== false;
+var codeMacdotEnabled = codeConf.macdot !== false;
+var hitokotoEnabled = hitokotoConf.enable !== false;
+var pjaxConf = theme.pjax || {};
+var pjaxEnabled = pjaxConf.enable === true || (pjaxConf.enable !== false && musicEnabled);
+var starsConf = (theme.effects && theme.effects.stars) || {};
+var starsEnabled = starsConf.enable !== false;
+var fontsConf = (theme.style && theme.style.fonts) || {};
+var fontsEnabled = fontsConf.enable !== false;
+%>
+<script src="<%= url_for('/lib/jquery@3.5.1/jquery.min.js') %>"></script>
+<% if (codeCopyEnabled) { %>
+<link rel="stylesheet" href="<%= url_for('/lib/qmsg/qmsg.css') %>">
+<script src="<%= url_for('/lib/clipboard/clipboard.min.js') %>"></script>
+<script src="<%= url_for('/lib/qmsg/qmsg.js') %>"></script>
+<% } %>
+<% if (musicEnabled) { %>
+<script src="<%= url_for('/lib/APlayer/APlayer.min.js') %>"></script>
+<% } %>
+<% if (pjaxEnabled) { %>
+<script src="<%= url_for('/lib/jquery-pjax/jquery.pjax.min.js') %>"></script>
+<script src="<%= url_for('/lib/nprogress/nprogress.min.js') %>"></script>
+<% } %>
+<script>
+window.ThemeConfig = {
+  theme_mode: 'user',
+  enable_darkmode: <%= theme.darkmode && theme.darkmode.enable !== false ? 'true' : 'false' %>,
+  darkmode_default: '<%= theme.darkmode && theme.darkmode.default ? theme.darkmode.default : 'light' %>',
+  enable_loading_bar: false,
+  enable_footer: true,
+  footer_position: '',
+  enable_code_title: <%= codeTitleEnabled ? 'true' : 'false' %>,
+  enable_code_hr: false,
+  enable_code_macdot: <%= codeMacdotEnabled ? 'true' : 'false' %>,
+  enable_code_newline: false,
+  show_tools_when_hover: false,
+  enable_code_expander: false,
+  enable_fold_long_code: false,
+  long_code_height: 800,
+  enable_code_copy: <%= codeCopyEnabled ? 'true' : 'false' %>,
+  check_baidu_collect: false,
+  enable_global_music_player: <%= musicEnabled ? 'true' : 'false' %>,
+  music_api: '<%= musicConf.api || '/api/meting' %>',
+  music_source: '<%= musicConf.server || 'netease' %>',
+  music_player_type: '<%= musicConf.type || 'playlist' %>',
+  music_list_id: '<%= musicConf.id || '' %>',
+  music_player_theme: '<%= musicConf.theme || '#fb6c28' %>',
+  music_auto_play: <%= musicConf.autoplay === true ? 'true' : 'false' %>,
+  music_player_volume: <%= musicConf.volume != null ? Number(musicConf.volume) : 0.7 %>,
+  music_loop_play: '<%= musicConf.loop || 'all' %>',
+  enable_hitokoto: <%= hitokotoEnabled ? 'true' : 'false' %>,
+  hitokoto_api: '<%= hitokotoConf.api || 'https://v1.hitokoto.cn' %>',
+  hitokoto_type: '<%= hitokotoConf.type || '' %>',
+  enable_pjax: <%= pjaxEnabled ? 'true' : 'false' %>,
+  enable_stars: <%= starsEnabled ? 'true' : 'false' %>,
+  stars_count: <%= starsConf.count != null ? Number(starsConf.count) : 14 %>,
+  stars_min_size: <%= starsConf.min_size != null ? Number(starsConf.min_size) : 16 %>,
+  stars_max_size: <%= starsConf.max_size != null ? Number(starsConf.max_size) : 26 %>,
+  stars_image: '<%= starsConf.image ? url_for(starsConf.image) : '' %>',
+  enable_fonts: <%= fontsEnabled ? 'true' : 'false' %>,
+  enable_back2top: <%= theme.actions && theme.actions.back2top !== false ? 'true' : 'false' %>,
+  enable_back2top_smooth: <%= theme.actions && theme.actions.back2top_smooth !== false ? 'true' : 'false' %>,
+  enable_weather: <%= theme.aside && theme.aside.weather && theme.aside.weather.enable ? 'true' : 'false' %>,
+  weather_token: '<%= theme.aside && theme.aside.weather && theme.aside.weather.token ? theme.aside.weather.token : '' %>',
+  link_behavior: 'default',
+  enable_fixed_header: true,
+  enable_clean_mode: false,
+  cursor_effect: 'off',
+  backdrop: 'off',
+  enable_offscreen_tip: false,
+  enable_birthday: false,
+  show_loaded_time: false,
+  enable_debug: false,
+  enable_toc: <%= theme.toc && theme.toc.enable !== false ? 'true' : 'false' %>,
+  toc_depth: <%= theme.toc && theme.toc.depth != null ? Number(theme.toc.depth) : 0 %>,
+  BASE_URL: '',
+  blog_url: '<%= config.url %>',
+  BASE_RES_URL: '<%= url_for('/') %>',
+  search_path: '<%= theme.search && theme.search.path ? url_for(theme.search.path) : url_for('search.json') %>'
+};
+// Force-assign: browsers expose #Joe as window.Joe (HTMLElement), so `||` would skip the stub.
+window.Joe = {
+  isMobile: /windows phone|iphone|android/gi.test(window.navigator.userAgent),
+  bloggerGenerateAvatarOpts: {},
+  replaceAllTextAvatarImage: function () {},
+  errorImg: function (el) {
+    if (!el) return;
+    el.src = '<%= url_for('/img/img_load_failed.jpg') %>';
+  }
+};
+window.PageAttrs = window.PageAttrs || {};
+</script>
+<script src="<%= url_for('/js/utils.js') %>"></script>
+<script src="<%= url_for('/js/common.js') %>"></script>
+<% if (theme.effects && theme.effects.wow !== false) { %>
+<script src="<%= url_for('/lib/wowjs/wow.min.js') %>"></script>
+<% } %>
+<script src="<%= url_for('/js/hexo-joe.js') %>"></script>
+<% if (starsEnabled) { %>
+<script src="<%= url_for('/js/stars.js') %>"></script>
+<% } %>
+<% if (theme.effects && theme.effects.wow !== false) { %>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.WOW) new WOW({ boxClass: 'wow', animateClass: 'animated', offset: 0, mobile: false, live: true }).init();
+});
+</script>
+<% } %>
+<%
+var siteMermaid = config.mermaid || {};
+var themeMermaid = theme.mermaid || {};
+var mermaidEnabled = themeMermaid.enable !== false && siteMermaid.enable !== false;
+var mermaidVersion = themeMermaid.version || '10.9.1';
+if (siteMermaid.version && !/^7\./.test(String(siteMermaid.version))) {
+  mermaidVersion = siteMermaid.version;
+}
+var hasMermaid = page.content && /class=["']mermaid["']/.test(page.content);
+%>
+<% if (mermaidEnabled && (pjaxEnabled || hasMermaid)) { %>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@<%= mermaidVersion %>/dist/mermaid.min.js"></script>
+<script src="<%= url_for('/js/mermaid-init.js') %>"></script>
+<% } %>
+<% if (theme.toc && theme.toc.enable !== false && (pjaxEnabled || is_post())) { %>
+<script src="<%= url_for('/lib/tocbot/tocbot.min.js') %>"></script>
+<script src="<%= url_for('/js/toc-init.js') %>"></script>
+<% } %>
+<!-- Vercel Speed Insights -->
+<script type="module">
+  import { injectSpeedInsights } from '<%= url_for('/lib/vercel-speed-insights/index.mjs') %>';
+  injectSpeedInsights();
+</script>
+<% if (pjaxEnabled) { %>
+<script src="<%= url_for('/js/pjax.js') %>"></script>
+<% } %>

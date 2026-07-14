@@ -1,0 +1,24 @@
+<div class="joe_main">
+  <div class="joe_index">
+    <div class="joe_index__article">
+      <div class="joe_index__title">
+        <ul class="joe_index__title-title passage-list-tabs default">
+          <li class="item active" data-type="1">最新文章</li>
+        </ul>
+      </div>
+      <div class="joe_index__list">
+        <ul class="joe_list" aria-label="posts">
+          <% if (page.posts && page.posts.length) { %>
+            <% page.posts.each(function(post, i) { %>
+              <%- partial('_partial/post-card', { post: post, index: i }) %>
+            <% }) %>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <%- partial('_partial/pagination') %>
+</div>
+<% if (theme.aside && theme.aside.enable) { %>
+  <%- partial('_partial/aside') %>
+<% } %>
